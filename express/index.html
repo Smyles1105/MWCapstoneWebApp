@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<script src="https://cdn.tiny.cloud/1/mczk2rboulwee27dkzny30c2fhzliifi5ko4dkwu2qlm65da/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+  <script>
+
+    var taskHeaderConfig = 
+    {
+        selector: '.taskheader',
+        plugins: 'autolink media spellchecker link',
+        toolbar: 'undo redo | bold italic underline',
+        toolbar_mode: 'floating',
+        menubar: false,
+        inline: true,
+        resize: 'both',
+        valid_elements: 'strong,em,span[style],a[href]',
+        valid_styles: {
+          '*': 'font-size,font-family,color,text-decoration,text-align'
+        }
+
+
+    }
+    var taskInfoConfig =
+    {
+        selector: '.taskInf',
+        menubar: false,
+        plugins: [
+          'autolink',
+          'link',
+          'lists'
+        ],
+        toolbar: [
+        'undo redo | bold italic underline | fontselect fontsizeselect',
+        'forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent'
+
+        ]
+
+
+    }
+    tinymce.init(taskHeaderConfig);
+    tinymce.init(taskInfoConfig);
+  </script>
+<style>
+
+    :root {
+
+        --background-color:  white;
+
+    }
+
+    #taskInf {
+
+      background-color: var(--background-color);
+    }
+
+.taskCSS {
+    position: absolute;
+    min-height: 90 px;
+    min-width: 90 px;
+    z-index: 9;
+    background-color: #f1f1f1;
+    text-align: center;
+    resize: both;
+    overflow: auto;
+    
+}
+
+.taskheader {
+  padding: 20px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+  border:black, 2px;
+  
+}
+
+  #taskloc {
+    background: #87929b;
+    padding: 400px;
+    z-index: 10;
+    border:black, 8px;
+    
+
+  }
+
+  .taskBorder {
+    position: relative;
+    background: black;
+    padding: 4px;
+  }
+
+  .taskInf {
+    border: 2px;
+    background: none;
+    min-height: 40 px;
+    height: 400000000000 px;
+    min-width: 40 px;
+    font-size:18pt;
+    resize: both;
+    overflow: auto;
+    padding: 39px;
+  }
+
+  #TCSSCustomizer {
+    background: darkgrey;
+    border: black, 3px;
+    padding: 100px;
+    position: absolute;
+    z-index: 10;
+
+  }
+</style>
+
+
+<h1> Task Management Program </h1>
+
+
+<div id = "TCSSCustomizer">
+
+
+
+</div>
+<div id = "taskloc">
+
+  <button onclick="taskCreate()">Add Task</button>
+
+  <div id = "tasktemplate" class = "taskCSS">
+    <div class = "taskBorder" style = "border-bottom: black; border: 4px;">
+    <div id = "tasktemplateheader" class = "taskheader">
+    Click here to move
+    </div>
+    
+    <div id = "taskInfBG" style="padding-top: 20px; padding-bottom: 20px; margin-top: 5%;">
+      <input type="button" id="CSSGUIButton" src="node-ex-website/assets/settingsIcon.png" onclick="">
+      <input type ="color" id ="taskInfBGChanger" onChange ="this.parentElement.style.backgroundColor = this.value;" style = "padding: 0px; border: none; background: none;">
+      <div class ="taskInf">
+
+      </div>
+      
+    </div>
+    
+  </div>
+  </div>
+
+</div>
+<body>
+  
+  </div>
+
+  <script>
+    
+    function startup()
+    {
+      colourSels.addEventListener("input", updateFirst, false);
+      colourSels.addEventListener("change", watchColorPicker, false);
+
+    }
+    //Make the task element draggable:
+      var TaskLocation = document.getElementById("taskloc");
+      var Tasks = TaskLocation.getElementsByClassName("taskCSS");
+      for (var i =0; i < Tasks.length; i++)
+      {
+        dragElement(Tasks[i]);
+      }
+
+      function dragElement(elmnt) 
+      {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (elmnt.getElementsByClassName("taskheader")[0])
+      {
+      elmnt.getElementsByClassName("taskheader")[0].onmousedown =dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+function taskCreate()
+{
+  var counter = 0;
+  var taskTemp = document.getElementById("tasktemplate");
+  var taskcln = taskTemp.cloneNode(true);
+  taskcln.id = "task_" + counter;
+  document.getElementById("taskloc").appendChild(taskcln);
+  counter += 1;
+  dragElement(taskcln);
+}
+
+function taskInfBGChange()
+{
+  var colourSel = document.getElementById("taskInfBGChanger");
+  var SelCol = colourSel.value;
+  var TInfBG = document.getElementById("taskInfBG");
+  TInfBG.style.backgroundColor = SelCol;
+  
+
+}
+
+
+
+
+  function updateFirst(event)
+  {
+
+    if (CSP)
+    {
+      CSP.style.backgroundColor = event.target.value;
+    }
+  }
+
+  window.addEventListener("load", startup, false);
+    var colourSels = document.getElementsByClassName("taskInfBGChanger")[0];
+    var CSP = colourSels.closest("taskCSS");
+
+  </script>
+
+
+</body>
