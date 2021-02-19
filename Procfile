@@ -1,1 +1,1 @@
-web.3000: npm start
+web: npm start
