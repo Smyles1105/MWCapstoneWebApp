@@ -1,1 +1,1 @@
-web.3000: node server.js
+web.3000: npm start
