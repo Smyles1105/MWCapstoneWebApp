@@ -24,20 +24,19 @@
     {
         selector: '.taskInf',
         menubar: false,
+        inline: true,
         plugins: [
           'autolink',
           'link',
-          'lists'
+          'lists',
+          'quickbars'
         ],
-        toolbar: [
-        'undo redo | bold italic underline | fontselect fontsizeselect',
-        'forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent'
-
-        ]
-
+        toolbar: false,
+        quickbars_selection_toolbar: 'undo redo | bold italic underline | fontselect fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent | formatselect',
+        quickbars_insert_toolbar: ''
 
     }
-    tinymce.init(taskHeaderConfig);
+    
     tinymce.init(taskInfoConfig);
   </script>
 <style>
@@ -55,13 +54,16 @@
 
 .taskCSS {
     position: absolute;
-    min-height: 90 px;
-    min-width: 90 px;
+    min-height: 160px;
+    min-width: 160px;
+    height: 480px;
+    width: 480px;
     z-index: 9;
     background-color: #f1f1f1;
     text-align: center;
     resize: both;
     overflow: auto;
+    border: solid black;
     
 }
 
@@ -71,9 +73,11 @@
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
-  border:black, 2px;
+  border: none;
   
 }
+
+
 
   #taskloc {
     background: #87929b;
@@ -91,20 +95,24 @@
   }
 
   .taskInf {
-    border: 2px;
+    box-sizing: content-box;
+    position: relative;
     background: none;
-    min-height: 40 px;
-    height: 400000000000 px;
-    min-width: 40 px;
+    min-height: 40px;
+    height: 320px;
+    min-width: 40px;
+    width: 480px;
     font-size:18pt;
-    resize: both;
     overflow: auto;
-    padding: 39px;
+    float: right;
+    top: 20px;
+    padding-left: 20px;
+  
   }
 
   #TCSSCustomizer {
     background: darkgrey;
-    border: black, 3px;
+    border: black, 0px;
     padding: 100px;
     position: absolute;
     z-index: 10;
@@ -126,22 +134,22 @@
   <button onclick="taskCreate()">Add Task</button>
 
   <div id = "tasktemplate" class = "taskCSS">
-    <div class = "taskBorder" style = "border-bottom: black; border: 4px;">
     <div id = "tasktemplateheader" class = "taskheader">
     Click here to move
     </div>
     
-    <div id = "taskInfBG" style="padding-top: 20px; padding-bottom: 20px; margin-top: 5%;">
-      <input type="button" id="CSSGUIButton" src="node-ex-website/assets/settingsIcon.png" onclick="">
-      <input type ="color" id ="taskInfBGChanger" onChange ="this.parentElement.style.backgroundColor = this.value;" style = "padding: 0px; border: none; background: none;">
-      
-      <p contenteditable="true">
-          this content is editable
-      </p>
+    <div id = "taskInfBG" style="padding-top: 20px; padding-bottom: 20px; padding-left: 20px; padding-right: 20px; margin-top: 5%; background-color: none; resize: both;">
+     
+     <div class = "colourChanger" style="position: relative; float: left;">
+      <label style = "position:relative; top: -35px; right: 60px; font-weight: bold;"><bold>Change BG Colour:</bold></label>
+      <input type ="color" id ="taskInfBGChanger" onChange ="this.parentElement.parentElement.style.backgroundColor = this.value;" style = "position: relative; float: left;">
+
+     </div>
+       <div class = "taskInf">
+      </div>
       
     </div>
     
-  </div>
   </div>
 
 </div>
